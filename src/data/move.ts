@@ -4084,6 +4084,25 @@ export class TeraBlastTypeAttr extends VariableMoveTypeAttr {
   }
 }
 
+export class TeraStarstormTypeAttr extends VariableMoveTypeAttr {
+  apply(user: Pokemon, target: Pokemon, move: Move, args: any[]): boolean {
+  /**
+   * @param user {@linkcode Pokemon} the user's type is checked
+   * @param target {@linkcode Pokemon} N/A
+   * @param move {@linkcode Move} {@linkcode Move.TeraStarstormTypeAttr}
+   * @param {any[]} args N/A
+   * @returns true or false
+   */
+    if (user.isTerastallized() && user.isOfType(Type.STELLAR)) {
+      move.type = user.getTeraType(); 
+      //changes move type to stellar type
+      return true;
+    }
+
+    return false;
+  }
+}
+
 export class MatchUserTypeAttr extends VariableMoveTypeAttr {
   apply(user: Pokemon, target: Pokemon, move: Move, args: any[]): boolean {
     const userTypes = user.getTypes(true);
@@ -9030,6 +9049,7 @@ export function initMoves() {
       .ignoresVirtual(),
     new AttackMove(Moves.TERA_STARSTORM, Type.NORMAL, MoveCategory.SPECIAL, 120, 100, 5, -1, 0, 9)
       .attr(TeraBlastCategoryAttr)
+      .attr(TeraStarstormTypeAttr)
       .partial(),
     new AttackMove(Moves.FICKLE_BEAM, Type.DRAGON, MoveCategory.SPECIAL, 80, 100, 5, 30, 0, 9)
       .attr(PreMoveMessageAttr, doublePowerChanceMessageFunc)
